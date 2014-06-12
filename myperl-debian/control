@@ -1,0 +1,14 @@
+Source: myperl
+Section: unknown
+Priority: extra
+Maintainer: Scott Hardin <scott@hnsc.de>
+Build-Depends: debhelper (>= 8.0.0)
+Standards-Version: 3.9.3
+Homepage: <insert the upstream URL, if relevant>
+#Vcs-Git: git://git.debian.org/collab-maint/myperl.git
+#Vcs-Browser: http://git.debian.org/?p=collab-maint/myperl.git;a=summary
+
+Package: myperl
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Local Perl installation independent of system Perl'

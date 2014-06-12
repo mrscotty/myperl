@@ -1,0 +1,7 @@
+openxpki-core-deps-myperl for Debian
+------------------------------
+
+This is a debian-ized package for the CPAN prerequisites for the
+OpenXPKI core server.
+
+ -- Scott Hardin <scott@hnsc.de>  Fri, 13 Jun 2014 12:16:34 +0000

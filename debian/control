@@ -1,0 +1,15 @@
+Source: myperl
+Maintainer: Scott Hardin <scott@hnsc.de>
+Priority: optional
+Build-Depends: debhelper (>= 3.0.18), perl (>= 5.6.0-16), libversion-perl, libconfig-std-perl, libtemplate-perl
+
+Package: myperl
+Architecture: any
+Recommends:
+Section: perl
+Priority: optional
+Depends: ${perl:Depends}, ${shlibs:Depends}
+Description: myperl is a local Perl installation
+ This package contains a full base Perl installation that may be used
+ and maintained independently of the base Perl installed by the underlying
+ distribution.

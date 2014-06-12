@@ -1,0 +1,5 @@
+myperl (5.18.2+1-1) unstable; urgency=low
+
+  * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+
+ -- Scott Hardin <scott@hnsc.de>  Fri, 13 Jun 2014 08:23:30 +0000
