@@ -1,7 +1,8 @@
-# Makefile for libclass-std-myperl
+# Makefile for OpenXPKI Perl Dependencies
 
 PERL = /opt/myperl/bin/perl
-CPANM = /opt/myperl/bin/cpanm
+#CPANM = /opt/myperl/bin/cpanm
+CPANM = $(PERL) ./cpanm
 COREDIR = $(HOME)/git/openxpki/core/server
 
 # Usage: $(call perlcfg,KEY)
@@ -40,7 +41,13 @@ info:
 	@echo "CPANM        = $(CPANM)"
 	@echo "CPANM_OPTS   = $(CPANM_OPTS)"
 
-install: info
+cpanm:
+	curl -LO http://xrl.us/cpanm
+	chmod +x cpanm
+
+install: info cpanm
+	PERL5LIB=$(PERL5LIB) PERL_MB_OPT=$(PERL_MB_OPT) DESTDIR=$(DESTDIR) PERL_MM_OPT=$(PERL_MM_OPT) \
+		$(CPANM) $(CPANM_OPTS) Config::Std Class::Std
 	PERL5LIB=$(PERL5LIB) PERL_MB_OPT=$(PERL_MB_OPT) DESTDIR=$(DESTDIR) PERL_MM_OPT=$(PERL_MM_OPT) \
 		$(CPANM) $(CPANM_OPTS) --installdeps $(COREDIR)
 #		$(CPANM) $(CPANM_OPTS) Class::Std Crypt::OpenSSL::AES

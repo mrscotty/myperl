@@ -5,13 +5,28 @@
 #
 # I left it here to document the process for the next time I
 # am forced to do something strange like this.
+#
+# Usage:
+#
+#	# Create a bootstrap.mk.local with the DEBEMAIL and DEBFULLNAME
+#	# environment variables
+#	echo "DEBEMAIL    = "scott@hnsc.de" > bootstrap.mk.local
+#	echo "DEBFULLNAME = "Scott Hardin" >> bootstrap.mk.local
+#
+#	# Generate the initial debian/ directory and build the 
+#	# source/binary packages from that
+#	./bootstrap.mk
 
 GITDIR = /git/myperl
 PERL_TARBALL = perl-5.18.2.tar.bz2
 SRCDIR=perl-5.18.2
 MYPERL_NAME=myperl_5.18.2+1
 
-doit: prep-state build-state
+-include bootstrap.mk.local
+
+.PHONY: all prep build clean inst
+
+all: prep-state build-state
 
 prep: prep-state
 prep-state:

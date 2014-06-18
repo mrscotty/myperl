@@ -1,7 +1,80 @@
 # OVERVIEW
 
-This is a parallel installation of Perl that is used independently of
-the system Perl supplied by the distribution you are using.
+'myperl' is a Perl installation that is independent of the system Perl
+supplied by the distribution you are using.
+
+For many cases, the system Perl that comes with your distribution is
+completely sufficient. But if your application has a plethora of CPAN
+dependencies or requires module versions not supplied by the distribution,
+'myperl' can be a way of having debian packages of your own Perl and 
+CPAN dependencies.
+
+# BUILDING MYPERL
+
+For those familiar with debian packaging, you'll notice  that this package
+is a non-native debian package. It uses the original Perl tarball (which
+gets renamed to 'myperl\_\*.orig.tar.bz2) and adds a debian/ directory.
+
+To build the debian myperl package:
+
+    # fetch Perl tarball, if needed
+    make fetch-perl
+
+    # build debian package
+    make myperl
+
+## First Steps (initial non-native debian package)
+
+To see how the initial contents of the debian/ were created, see the script
+'bootstrap.mk'.
+
+# BUILDING SUPPLEMENTAL PACKAGES
+
+Installing supplemental packages (i.e.: all the CPAN prerequisites needed
+by your application) is done quite differently from the debian Perl. Debian
+uses dh-perl to package each CPAN module individually, which works well for
+the system Perl--unless your application needs 130 CPAN prereqs.
+
+When packaging the dependencies for your application, it is much easier 
+to put them all in a single debian package. And if your application
+specifies its dependencies correctly, the packaging script is as simple
+as calling 'cpanm --installdeps PATH\_TO\_YOUR\_APP\_SRC'.
+
+For these packages, the native debian package seems to work well. 
+
+The ex/ directory contains a couple of examples, simple and complex.
+
+# ADDITIONAL INFO
+
+## TROUBLESHOOTING
+
+If you get an error that files aren't found, look for the line '<CPAN::Module> is up to date.'
+This happens when the CPAN module is already installed.
+
+## Alternatives
+
+### Manual Download and Installation of Perl Tarball
+
+Sure, this may be an easy option in an ad-hoc development environment, but if 
+your application is deployed using Debian packages, you need an easy method
+for building those packages. That's exactly what 'myperl' is.
+
+### Perlbrew
+
+Perlbrew does automate the task of downloading and installing the Perl,
+tarball, but the foo it adds to cater to developers adds some overhead
+that makes it less suitable for deployment in production environments.
+
+Also, perlbrew depends on a compiler, which is often frowned on in production
+environments for security reasons.
+
+### Carton
+
+Carton looks very promising because it can be easily used to create Perl
+and dependency packages for distribution in develoment, test and production
+environments. I really wanted to use this one. According to the Carton
+website, however, it doesn't work in environments using embedded Perl
+(e.g. mod\_perl). Bummer.
 
 # REFERENCES
 
@@ -11,124 +84,6 @@ Information for preparing this was taken from the following sources:
 
 *    http://www.debian.org/doc/manuals/maint-guide/first.en.html
 
-## Prereqs
-
-    sudo aptitude install -y quilt
-
-# NOTES (Following the maint-guide doc from debian)
-
-## First Steps (initial non-native debian package)
-
-    . /git/myperl/deb.rc
-    cd ~/git/myperl
-    tar xjf perl-5.18.2.tar.bz
-    cd perl-5.18.2
-    dh_make -f ../perl-5.18.2.tar.bz2 --single --packagename myperl_5.18.2+1 --copyright artistic --yes
-
-### Output from dh\_make:
-
-    Maintainer name  : Scott Hardin
-    Email-Address    : scott@hnsc.de
-    Date             : Thu, 12 Jun 2014 19:19:44 +0000
-    Package Name     : myperl
-    Version          : 5.18.2+1
-    License          : artistic
-    Type of Package  : Single
-    Currently there is no top level Makefile. This may require additional tuning.
-    Done. Please edit the files in the debian/ subdirectory now. You should also
-    check that the myperl Makefiles install into $DESTDIR and not in / .
-
-### Patching up debian/ files
-
-Manually clean up the following files:
-
-debian/control: Set 'Description:' to 'Local Perl installation independent of system Perl'
-
-    cp /git/myperl/control debian/
-
-debian/rules: use our hacked version
-
-    cp /git/myperl/rules debian/
-
-Remove all example files:
-
-    rm debian/*.ex
-
-### TODO:
-
-* fix debian/copyright
-
-## Modifying the Source
-
-### Quilt
-
-**NOTE:** I didn't actually need quilt since I didn't end up adding 'configure'.
-
-    cp /git/myperl/quiltrc-dpkg.rc ~/.quiltrc-dpkg
-    . /git/myperl/deb.rc
-
-Note: to use quilt:
-
-    mkdir debian/patches
-    dquilt new <patch description>.patch
-    dquilt add <name of file(s) to patch>
-
-Create 'configuration' file with the following content:
 
 
-    dquilt refresh
-    dquilt header -e 
-    ... describe patch
-
-### Adding 'configuration' script
-
-    mkdir debian/patches
-    dquilt new add-auto-config-wrapper.patch
-    dquilt add configure
-    cp /git/myperl/configure .
-    dquilt refresh
-    dquilt header -e
-    ... describe patch
-
-## Building the Package
-
-    rm -rf UU
-    time dpkg-buildpackage -us -uc 2>&1 | tee ../build.out
-
-Note: this fails with an error that the package seems to be incomplete. The dh\_clean is cleaning up
-a file used by the tests.
-
-Fix debian/rules to have it's own dh\_clean.
-
-
-# BUILDING SUPPLEMENTAL PACKAGES
-
-First, install the myperl package. Then, if not already with myperl, install cpanm
-
-    curl -L http://cpanmin.us | /opt/myperl/bin/perl - --sudo App::cpanminus
-
-## Example Class::Std
-
-Class::Std is installed as a native debian package. The package name is libclass-std-myperl.
-
-    mkdir libclass-std-myperl-1.0
-    cd libclass-std-myperl-1.0
-    dh_make --native --single --packagename libclass-std-myperl --copyright artistic --yes
-
-
-    PERL5LIB=$HOME/tmp-build/opt/myperl/lib/5.18.2/x86_64-linux:$HOME/tmp-build/opt/myperl/lib/5.18.2 \
-        PERL_MB_OPT="--destdir '$HOME/tmp-build' --installdirs site --installarchlib '/opt/myperl/lib/$arch'" \
-        PERL_MM_OPT="INSTALLDIRS=site DESTDIR=$HOME/tmp-build INSTALLARCHLIB=/opt/myperl/lib/5.18.2" \
-        /opt/myperl/bin/cpanm Class::Std
-
-TODO: fix path in .packlist files
-
-### Cleaning debian/
-
-    rm -f debian/*.ex debian/*.EX debian/*.log
-
-# TROUBLESHOOTING
-
-If you get an error that files aren't found, look for the line '<CPAN::Module> is up to date.'
-This happens when the CPAN module is already installed:cal foreground()
 

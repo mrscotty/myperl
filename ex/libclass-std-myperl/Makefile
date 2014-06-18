@@ -1,4 +1,5 @@
-# Makefile for libclass-std-myperl
+# Makefile for libclass-std-myperl (and other classes that I can use as 
+# test cases for the complexities of CPAN)
 
 PERL = /opt/myperl/bin/perl
 CPANM = /opt/myperl/bin/cpanm
@@ -32,6 +33,8 @@ info:
 install:
 	PERL5LIB=$(PERL5LIB) PERL_MB_OPT=$(PERL_MB_OPT) PERL_MM_OPT=$(PERL_MM_OPT) DESTDIR=$(DESTDIR) \
 			 $(CPANM) --reinstall --verbose Class::Std
+	PERL5LIB=$(PERL5LIB) PERL_MB_OPT=$(PERL_MB_OPT) PERL_MM_OPT=$(PERL_MM_OPT) DESTDIR=$(DESTDIR) \
+			 $(CPANM) --reinstall --verbose Class::Accessor
 	# Cleanup for missing support in cpanm for DESTDIR with .meta files
 	mv $(DESTDIR)/lib/perl5/$(ARCHNAME)/.meta $(DESTDIR)$(SITEARCH)/
 	# try to *safely* remove the unneeded directories
