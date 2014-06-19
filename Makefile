@@ -9,17 +9,17 @@
 #
 
 PERL_SRCBASE	= http://ftp.gwdg.de/pub/languages/perl/CPAN/src/5.0
-PERL_TARBALL	= perl-5.18.2.tar.bz2
-SRCDIR			= perl-5.18.2
+PERL_TARBALL	= perl-5.20.0.tar.bz2
+SRCDIR			= perl-5.20.0
 MYPERL_DEBIAN	= debian
 MYPERL_NAME		= myperl
-MYPERL_VERS     = 5.18.2+1
+MYPERL_VERS     = 5.20.0+1
 DEB_PKG			= $(MYPERL_NAME)_$(MYPERL_VERS)_amd64.deb
 MYPERL_TARBALL  = $(MYPERL_NAME)_$(MYPERL_VERS).orig.tar.bz2
 
 -include Makefile.local
 
-.PHONY: fetch-perl myperl myperl-clean clean
+.PHONY: fetch-perl myperl myperl-clean clean install
 
 fetch-perl: $(PERL_TARBALL)
 
@@ -49,3 +49,6 @@ realclean: clean
 		$(MYPERL_TARBALL) \
 		$(MYPERL_NAME)_$(MYPERL_VERS).debian.tar.gz \
 	    $(MYPERL_NAME)_$(MYPERL_VERS).dsc
+
+install: $(DEB_PKG)
+	sudo dpkg -i $(DEB_PKG)

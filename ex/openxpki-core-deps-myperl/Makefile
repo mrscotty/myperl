@@ -16,8 +16,9 @@ SITELIBEXP	= $(DESTDIR)$(call perlcfg,sitelibexp)
 ARCHNAME	= $(call perlcfg,archname)
 
 # The --reinstall flag ensures that the package is built even if cpanm finds
-# the module already installed
-CPANM_OPTS = --notest --reinstall --verbose
+# the module already installed. I tried using this, but found that I ended
+# up with Test::Harness in both myperl and this supplemental package
+CPANM_OPTS = --notest --verbose --skip-satisfied --skip-installed
 
 #MYPERL_PREFIX = /opt/myperl
 
