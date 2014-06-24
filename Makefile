@@ -5,7 +5,7 @@
 #
 #  fetch-perl	Fetches Perl tarball
 #
-#  myperl		Builds the myperl debian package
+#  debian		Builds the myperl debian package
 #
 
 PERL_SRCBASE	= http://ftp.gwdg.de/pub/languages/perl/CPAN/src/5.0
@@ -14,24 +14,48 @@ SRCDIR			= perl-5.20.0
 MYPERL_DEBIAN	= debian
 MYPERL_NAME		= myperl
 MYPERL_VERS     = 5.20.0+1
+
+############################################################
+# Debian Variables
+############################################################
+
 DEB_PKG			= $(MYPERL_NAME)_$(MYPERL_VERS)_amd64.deb
-MYPERL_TARBALL  = $(MYPERL_NAME)_$(MYPERL_VERS).orig.tar.bz2
+DEB_MYPERL_TARBALL  = $(MYPERL_NAME)_$(MYPERL_VERS).orig.tar.bz2
+
+############################################################
+# SuSE Variables
+############################################################
+
+SUSE_PKG		= $(MYPERL_NAME)-$(MYPERL_VERS).rpm
 
 -include Makefile.local
 
-.PHONY: fetch-perl myperl myperl-clean clean install
+############################################################
+# Generic Targets
+############################################################
+
+.PHONY: fetch-perl
 
 fetch-perl: $(PERL_TARBALL)
 
 $(PERL_TARBALL):
 	wget -O $@ $(PERL_SRCBASE)/$(PERL_TARBALL)
 
-myperl: $(DEB_PKG)
+clean:
+	rm -rf $(SRCDIR)
 
-$(MYPERL_TARBALL): $(PERL_TARBALL)
+############################################################
+# Debian Targets
+############################################################
+
+.PHONY: debian debian-clean debian-install
+
+debian: $(DEB_PKG)
+
+$(DEB_MYPERL_TARBALL): $(PERL_TARBALL)
 	cp --archive $< $@
 
-$(DEB_PKG): $(MYPERL_TARBALL)
+$(DEB_PKG): $(DEB_MYPERL_TARBALL)
 	# unpack Perl tarball
 	tar xjf $(PERL_TARBALL)
 	# copy over the debian/ stuff
@@ -41,14 +65,18 @@ $(DEB_PKG): $(MYPERL_TARBALL)
 	# build the package
 	cd $(SRCDIR) && dpkg-buildpackage -us -uc
 
-clean:
-	rm -rf $(SRCDIR) $(DEB_PKG)
-
-realclean: clean
+debian-clean: clean
 	rm -rf $(DEB_PKG) \
-		$(MYPERL_TARBALL) \
+		$(DEB_MYPERL_TARBALL) \
 		$(MYPERL_NAME)_$(MYPERL_VERS).debian.tar.gz \
 	    $(MYPERL_NAME)_$(MYPERL_VERS).dsc
 
-install: $(DEB_PKG)
+debian-install: $(DEB_PKG)
 	sudo dpkg -i $(DEB_PKG)
+
+############################################################
+# SuSE Targets
+############################################################
+
+suse: $(SUSE_PKG)
+
