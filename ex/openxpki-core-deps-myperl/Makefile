@@ -14,11 +14,17 @@ SITELIB		= $(call perlcfg,sitelib)
 SITEARCH	= $(call perlcfg,sitearch)
 SITELIBEXP	= $(DESTDIR)$(call perlcfg,sitelibexp)
 ARCHNAME	= $(call perlcfg,archname)
+SITEMAN1EXP	= $(call perlcfg,siteman1direxp)
+SITEMAN3EXP	= $(call perlcfg,siteman3direxp)
+SITESCRIPTEXP	= $(call perlcfg,sitescriptexp)
 
 # The --reinstall flag ensures that the package is built even if cpanm finds
 # the module already installed. I tried using this, but found that I ended
 # up with Test::Harness in both myperl and this supplemental package
 CPANM_OPTS = --notest --verbose --skip-satisfied --skip-installed
+
+-include ../../Makefile.local
+-include Makefile.local
 
 #MYPERL_PREFIX = /opt/myperl
 
@@ -56,6 +62,36 @@ install: info cpanm
 	-mv $(DESTDIR)/lib/perl5/$(ARCHNAME)/.meta $(DESTDIR)$(SITEARCH)/
 	# try to *safely* remove the unneeded directories
 	-rmdir $(DESTDIR)/lib/perl5/$(ARCHNAME) $(DESTDIR)/lib/perl5 $(DESTDIR)/lib
+	# Issue #2 - until I can get Pinto running, just remove the offending files
+	# Note: since this is a nasty kludge, I'll leave the fail-on-error behavior
+	# of make.
+	rm -rf \
+		$(DESTDIR)$(SITEMAN3EXP)/CGI.3 \
+		$(DESTDIR)$(SITEMAN3EXP)/CGI::Apache.3 \
+		$(DESTDIR)$(SITEMAN3EXP)/CGI::Carp.3 \
+		$(DESTDIR)$(SITEMAN3EXP)/CGI::Cookie.3 \
+		$(DESTDIR)$(SITEMAN3EXP)/CGI::Pretty.3 \
+		$(DESTDIR)$(SITEMAN3EXP)/CGI::Push.3 \
+		$(DESTDIR)$(SITEMAN3EXP)/CGI::Switch.3 \
+		$(DESTDIR)$(SITEMAN3EXP)/CGI::Util.3 \
+		$(DESTDIR)$(SITELIB)/CGI.pm \
+		$(DESTDIR)$(SITELIB)/CGI/Apache.pm \
+		$(DESTDIR)$(SITELIB)/CGI/Carp.pm \
+		$(DESTDIR)$(SITELIB)/CGI/Cookie.pm \
+		$(DESTDIR)$(SITELIB)/CGI/Pretty.pm \
+		$(DESTDIR)$(SITELIB)/CGI/Push.pm \
+		$(DESTDIR)$(SITELIB)/CGI/Switch.pm \
+		$(DESTDIR)$(SITELIB)/CGI/Util.pm \
+		$(DESTDIR)$(SITEMAN3EXP)/Module::Build* \
+		$(DESTDIR)$(SITELIB)/Module/Build.pm \
+		$(DESTDIR)$(SITELIB)/Module/Build \
+		$(DESTDIR)$(ARCHLIB)/auto/Module/Build 
+	# Issue #2 - let's just trash these for now
+	rm -rf \
+		$(DESTDIR)$(SITESCRIPTEXP)/config_data \
+		$(DESTDIR)$(SITEMAN1EXP)/config_data.1 \
+		$(DESTDIR)$(SITEMAN3EXP)/inc::latest.3 \
+		$(DESTDIR)$(SITELIB)/inc
 
 %:
 	@echo "** DEBUG ** makefile target '$@' doesn't exist in openxpki-core-deps-myperl Makefile"
