@@ -33,7 +33,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 #PreReq:         perl-base = %version
 #PreReq:         %fillup_prereq
 Requires:       myperl
-Requires:       libopenssl
+Requires:       libopenssl0_9_8
 Requires:       zlib
 BuildRequires:  myperl
 BuildRequires:  libopenssl-devel
@@ -45,13 +45,8 @@ BuildRequires:  zlib-devel
 OpenXPKI Core dependencies from CPAN using myperl
 
 %prep
-#%setup -q -n perl-%{pversion}
-#cp -p %{S:3} .
 
 %build
-#./Configure -des \
-#    -Dprefix=$RPM_BUILD_ROOT \
-#    -Duseshrplib
 
 %check
 
@@ -65,6 +60,7 @@ export DESTDIR=$RPM_BUILD_ROOT
 function perlcfg() {
   local key=$1
   local val=`$PERL "-V:$key" | awk -F\' '{print $2}'`
+  # fix syntax highlighting with extra apostrophe -> '
   echo "$val"
 }
   
@@ -88,18 +84,23 @@ chmod +x cpanm
 PERL5LIB=$PERL5LIB PERL_MB_OPT=$PERL_MB_OPT DESTDIR=$DESTDIR PERL_MM_OPT=$PERL_MM_OPT \
     $CPANM $CPANM_OPTS \
     Config::Std Class::Std
-PERL5LIB=$PERL5LIB PERL_MB_OPT=$PERL_MB_OPT DESTDIR=$DESTDIR PERL_MM_OPT=$PERL_MM_OPT \
-    $CPANM $CPANM_OPTS \
-    Proc::ProcessTable
+
+## I used this next one during testing
+#PERL5LIB=$PERL5LIB PERL_MB_OPT=$PERL_MB_OPT DESTDIR=$DESTDIR PERL_MM_OPT=$PERL_MM_OPT \
+#    $CPANM $CPANM_OPTS \
+#    Crypt::SSLeay
+
 (cd $COREDIR && \
     PERL5LIB=$PERL5LIB PERL_MB_OPT=$PERL_MB_OPT DESTDIR=$DESTDIR PERL_MM_OPT=$PERL_MM_OPT \
     $CPANM $CPANM_OPTS \
     --installdeps .)
 
 # Cleanup for missing support in cpanm for DESTDIR with .meta files
-mv $DESTDIR/lib/perl5/$ARCHNAME/.meta ${DESTDIR}$SITEARCH/
+mv $DESTDIR/lib/perl5/$ARCHNAME/.meta ${DESTDIR}$SITEARCH/ || echo "WARN: skipping error"
+
 # try to *safely* remove the unneeded directories
-rmdir $DESTDIR/lib/perl5/$ARCHNAME $DESTDIR/lib/perl5 $DESTDIR/lib
+rmdir $DESTDIR/lib/perl5/$ARCHNAME $DESTDIR/lib/perl5 $DESTDIR/lib || echo "WARN: skipping error"
+
 # Issue #2 - until I can get Pinto running, just remove the offending files
 # Note: since this is a nasty kludge, I'll leave the fail-on-error behavior
 # of make.
@@ -131,7 +132,6 @@ rm -rf \
 	${DESTDIR}${SITEMAN3EXP}/inc::latest.3 \
 	${DESTDIR}${SITELIB}/inc
 
-#make install DESTDIR=$RPM_BUILD_ROOT
 %{__perl} -MFile::Find -le '
     find({ wanted => \&wanted, no_chdir => 1}, "%{buildroot}");
     for my $x (sort @dirs, @files) {
