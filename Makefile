@@ -9,11 +9,12 @@
 #
 
 PERL_SRCBASE	= http://ftp.gwdg.de/pub/languages/perl/CPAN/src/5.0
-PERL_TARBALL	= perl-5.20.0.tar.bz2
-SRCDIR			= perl-5.20.0
+PERL_VERSION	= 5.20.0
+PERL_TARBALL	= perl-$(PERL_VERSION).tar.bz2
+SRCDIR			= perl-$(PERL_VERSION)
 MYPERL_DEBIAN	= debian
 MYPERL_NAME		= myperl
-MYPERL_VERS     = 5.20.0+1
+MYPERL_VERS     = $(PERL_VERSION)+1
 
 ############################################################
 # Debian Variables
@@ -26,7 +27,7 @@ DEB_MYPERL_TARBALL  = $(MYPERL_NAME)_$(MYPERL_VERS).orig.tar.bz2
 # SuSE Variables
 ############################################################
 
-SUSE_PKG		= $(MYPERL_NAME)-$(MYPERL_VERS).rpm
+SUSE_PKG		= $(MYPERL_NAME)-$(PERL_VERSION)-1.x86_64.rpm
 
 -include Makefile.local
 
@@ -79,4 +80,11 @@ debian-install: $(DEB_PKG)
 ############################################################
 
 suse: $(SUSE_PKG)
+
+$(SUSE_PKG): myperl.spec $(HOME)/rpmbuild/SOURCES/$(PERL_TARBALL)
+	rpmbuild -bb $<
+	mv $(HOME)/rpmbuild/RPMS/x86_64/$(SUSE_PKG) .
+
+$(HOME)/rpmbuild/SOURCES/$(PERL_TARBALL): $(PERL_TARBALL)
+	cp -a $< $@
 
