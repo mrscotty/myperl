@@ -1,8 +1,6 @@
 # Makefile for OpenXPKI Perl Dependencies
 
 PERL = /opt/myperl/bin/perl
-#CPANM = /opt/myperl/bin/cpanm
-CPANM = $(PERL) ./cpanm
 COREDIR = $(HOME)/git/openxpki/core/server
 
 # Usage: $(call perlcfg,KEY)
@@ -14,6 +12,7 @@ SITELIB		= $(call perlcfg,sitelib)
 SITEARCH	= $(call perlcfg,sitearch)
 SITELIBEXP	= $(DESTDIR)$(call perlcfg,sitelibexp)
 ARCHNAME	= $(call perlcfg,archname)
+ARCHLIB		= $(call perlcfg,archlib)
 SITEMAN1EXP	= $(call perlcfg,siteman1direxp)
 SITEMAN3EXP	= $(call perlcfg,siteman3direxp)
 SITESCRIPTEXP	= $(call perlcfg,sitescriptexp)
@@ -21,8 +20,9 @@ SITESCRIPTEXP	= $(call perlcfg,sitescriptexp)
 # The --reinstall flag ensures that the package is built even if cpanm finds
 # the module already installed. I tried using this, but found that I ended
 # up with Test::Harness in both myperl and this supplemental package
-CPANM_OPTS = --notest --verbose --skip-satisfied --skip-installed
+CPANM_OPTS = --notest --verbose --skip-satisfied --skip-installed --build-args="INSTALLPRIVLIB=$(SITELIB)"
 
+-include ../cpanm.mk
 -include ../../Makefile.local
 -include Makefile.local
 
@@ -34,7 +34,7 @@ export PERL5LIB		= $(DESTDIR)$(SITEARCH):$(DESTDIR)$(SITELIB):$(DESTDIR)/lib/per
 export PERL_MB_OPT	= "--destdir '$(DESTDIR)' --installdirs site"
 #export PERL_MB_OPT	= "--installdirs site"
 #export PERL_MM_OPT	= "INSTALLDIRS=site INSTALL_BASE=$(DESTDIR)"
-export PERL_MM_OPT	= "INSTALLDIRS=site"
+export PERL_MM_OPT	= "INSTALLDIRS=site INSTALLPRIVLIB=$(SITELIB)"
 
 info:
 	@echo "*** Makefile for openxpki-core-deps-myperl ***"
@@ -48,10 +48,6 @@ info:
 	@echo "CPANM        = $(CPANM)"
 	@echo "CPANM_OPTS   = $(CPANM_OPTS)"
 
-cpanm:
-	curl -LO http://xrl.us/cpanm
-	chmod +x cpanm
-
 install: info cpanm
 	PERL5LIB=$(PERL5LIB) PERL_MB_OPT=$(PERL_MB_OPT) DESTDIR=$(DESTDIR) PERL_MM_OPT=$(PERL_MM_OPT) \
 		$(CPANM) $(CPANM_OPTS) Config::Std Class::Std
@@ -62,6 +58,8 @@ install: info cpanm
 	-mv $(DESTDIR)/lib/perl5/$(ARCHNAME)/.meta $(DESTDIR)$(SITEARCH)/
 	# try to *safely* remove the unneeded directories
 	-rmdir $(DESTDIR)/lib/perl5/$(ARCHNAME) $(DESTDIR)/lib/perl5 $(DESTDIR)/lib
+	# remove perllocal.pod, if installed
+	-rm $(DESTDIR)$(ARCHLIB)/perllocal.pod
 	# Issue #2 - until I can get Pinto running, just remove the offending files
 	# Note: since this is a nasty kludge, I'll leave the fail-on-error behavior
 	# of make.

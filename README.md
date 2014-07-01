@@ -43,6 +43,9 @@ as calling 'cpanm --installdeps PATH\_TO\_YOUR\_APP\_SRC'.
 For these packages, the native debian package seems to work well. 
 
 The ex/ directory contains a couple of examples, simple and complex.
+To build libdbd-mysql, for example, run the following:
+
+    cd ex/libdbd-mysql-myperl && make package
 
 # ADDITIONAL INFO
 

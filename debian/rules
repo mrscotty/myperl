@@ -8,6 +8,7 @@
 
 # Uncomment this to turn on verbose mode.
 export DH_VERBOSE=1
+# Running all the Perl tests takes a *long* time
 export DEB_BUILD_OPTIONS=nocheck
 
 myinfo:
