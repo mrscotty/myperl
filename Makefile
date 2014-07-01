@@ -70,7 +70,8 @@ debian-clean: clean
 	rm -rf $(DEB_PKG) \
 		$(DEB_MYPERL_TARBALL) \
 		$(MYPERL_NAME)_$(MYPERL_VERS).debian.tar.gz \
-	    $(MYPERL_NAME)_$(MYPERL_VERS).dsc
+	    $(MYPERL_NAME)_$(MYPERL_VERS).dsc \
+		perl-$(MYPERL_VERS)
 
 debian-install: $(DEB_PKG)
 	sudo dpkg -i $(DEB_PKG)

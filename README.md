@@ -21,7 +21,14 @@ To build the debian myperl package:
     make fetch-perl
 
     # build debian package
-    make myperl
+    make debian
+
+As an example, here are the further steps for building OpenXPKI,
+including the CPAN dependencies:
+
+    (cd ex/libdbd-mysql-myperl && make package)
+    
+
 
 ## First Steps (initial non-native debian package)
 

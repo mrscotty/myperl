@@ -38,7 +38,7 @@ build:
 	./Configure -des \
 		-Dprefix=$(DESTDIR)/opt/myperl \
 		-Duseshrplib
-	dh_auto_build	# make -j1
+	dh_auto_build
 	#dh_auto_test	# make -j1 test
 
 %:
