@@ -13,7 +13,13 @@ before_install:
 # Try to get debug from inst stuff
 install:
     - make fetch-perl
+    - echo "travis_fold:start:#{make debian}"
     - make debian
+    - echo "travis_fold:end:#{make debian}"
+    - echo "travis_fold:start:#{make install}"
     - make debian-install
+    - echo "travis_fold:end:#{make install}"
+    - echo "travis_fold:start:#{make dbd-mysql}"
     - "(cd ex/libdbd-mysql-myperl && make package)"
+    - echo "travis_fold:end:#{make dbd-mysql}"
     - sudo dpkg -i ex/libdbd-mysql-myperl*.deb
