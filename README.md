@@ -26,7 +26,29 @@ To build the debian myperl package:
 As an example, here are the further steps for building OpenXPKI,
 including the CPAN dependencies:
 
+    # install the freshly-built myperl package
+    make debian-install
+
+    # install prereqs for mysql and openxpki
+    sudo aptitude install -y libmysqlclient-dev apache2
+
+    # build and install mysql package
     (cd ex/libdbd-mysql-myperl && make package)
+    sudo dpkg -i ex/libdbd-mysql-myperl*.deb
+
+    # build and install oxi dependencies
+    git clone /git/openxpki ~/git/openxpki
+    (cd ex/openxpki-core-deps-myperl && make package)
+    sudo dpkg -i ex/openxpki-core-deps-myperl*.deb
+
+    # build and install oxi
+    (cd ~/git/openxpki/package/debian && make core)
+    sudo dpkg -i ~/git/openxpki/package/debian/core/libopenxpki-perl*.deb
+
+
+
+
+    
     
 
 

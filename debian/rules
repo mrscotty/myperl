@@ -7,7 +7,7 @@
 # This special exception was added by Craig Small in version 0.37 of dh-make.
 
 # Uncomment this to turn on verbose mode.
-export DH_VERBOSE=1
+#export DH_VERBOSE=1
 # Running all the Perl tests takes a *long* time
 export DEB_BUILD_OPTIONS=nocheck
 
@@ -34,12 +34,28 @@ clean:
 
 build:
 	dh_testdir
+ifeq "$(TRAVIS)" "true"
+	@echo "travis_fold:start#{dh_auto_configure}"
+endif
 	# Instead of dh_auto_configure...
 	./Configure -des \
 		-Dprefix=$(DESTDIR)/opt/myperl \
 		-Duseshrplib
+ifeq "$(TRAVIS)" "true"
+	@echo "travis_fold:end#{dh_auto_configure}"
+	@echo "travis_fold:start#{dh_auto_build}"
+endif
 	dh_auto_build
+ifeq "$(TRAVIS)" "true"
+	@echo "travis_fold:end#{dh_auto_build}"
+endif
 	#dh_auto_test	# make -j1 test
 
 %:
+ifeq "$(TRAVIS)" "true"
+	@echo "travis_fold:start#{dh_$@}"
+endif
 	dh $@ 
+ifeq "$(TRAVIS)" "true"
+	@echo "travis_fold:end#{dh_$@}"
+endif
