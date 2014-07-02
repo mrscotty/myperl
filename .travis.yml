@@ -1,0 +1,17 @@
+# .travis.yml
+#
+# Note: Travis will run through the 'before_install' and 'install' steps
+# before executing 'make test'
+
+language: perl
+
+# Note: language-pack-de is needed for the i18n test
+before_install:
+    - sudo apt-get update -qq
+    - sudo DEBIAN_FRONTEND=noninteractive apt-get install -qq libmysqlclient-dev mysql-server
+
+# Try to get debug from inst stuff
+install:
+    - make fetch-perl debian debian-install
+    - "(cd ex/libdbd-mysql-myperl && make package)"
+    - sudo dpkg -i ex/libdbd-mysql-myperl*.deb
