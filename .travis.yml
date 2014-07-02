@@ -12,6 +12,8 @@ before_install:
 
 # Try to get debug from inst stuff
 install:
-    - make fetch-perl debian debian-install
+    - make fetch-perl
+    - make debian
+    - make debian-install
     - "(cd ex/libdbd-mysql-myperl && make package)"
     - sudo dpkg -i ex/libdbd-mysql-myperl*.deb
