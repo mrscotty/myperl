@@ -15,6 +15,8 @@ SRCDIR			= perl-$(PERL_VERSION)
 MYPERL_DEBIAN	= debian
 MYPERL_NAME		= myperl
 MYPERL_VERS     = $(PERL_VERSION)+1
+MYPERL			= /opt/myperl/bin/perl
+MYPROVE			= /opt/myperl/bin/prove
 
 ############################################################
 # Debian Variables
@@ -35,7 +37,7 @@ SUSE_PKG		= $(MYPERL_NAME)-$(PERL_VERSION)-1.x86_64.rpm
 # Generic Targets
 ############################################################
 
-.PHONY: fetch-perl
+.PHONY: fetch-perl clean test
 
 fetch-perl: $(PERL_TARBALL)
 
@@ -45,11 +47,15 @@ $(PERL_TARBALL):
 clean:
 	rm -rf $(SRCDIR)
 
+# Note: this currently defaults to debian because that's what we
+# do our travis-ci on.
+test: debian-test
+
 ############################################################
 # Debian Targets
 ############################################################
 
-.PHONY: debian debian-clean debian-install
+.PHONY: debian debian-clean debian-install debian-test
 
 debian: $(DEB_PKG)
 
@@ -75,6 +81,9 @@ debian-clean: clean
 
 debian-install: $(DEB_PKG)
 	sudo dpkg -i $(DEB_PKG)
+
+debian-test:
+	$(MYPROVE)
 
 ############################################################
 # SuSE Targets
