@@ -9,6 +9,35 @@ dependencies or requires module versions not supplied by the distribution,
 'myperl' can be a way of having debian packages of your own Perl and 
 CPAN dependencies.
 
+# VERSION NUMBERS
+
+## Definitions
+
+### Perl Version
+
+This is the version string of the underlying Perl version. As of this
+writing, the current version was 5.20.0.
+
+### Myperl Release Number
+
+This is a single integer used to distinguish between Myperl  that is unique
+for each underlying Perl version.
+
+This number starts at '1' and is incremented each time a new package for
+the given Perl version is generated. When the Perl version changes, it
+starts again at '1'.
+
+Since myperl is mainly about installable packages, this myperl version number
+can be used for the release number in RPM files.
+
+### Myperl Version
+
+This is the full version string used in the package name and for the 
+version number of the installable packages. It consists of the Perl version
+followed by the myperl release number, in the format:
+
+    PERL_VERSION.MYPERL_RELEASE_NUMBER
+
 # BUILDING MYPERL
 
 For those familiar with debian packaging, you'll notice  that this package

@@ -10,13 +10,18 @@
 
 PERL_SRCBASE	= http://ftp.gwdg.de/pub/languages/perl/CPAN/src/5.0
 PERL_VERSION	= 5.20.0
+MYPERL_RELEASE	= 1
 PERL_TARBALL	= perl-$(PERL_VERSION).tar.bz2
 SRCDIR			= perl-$(PERL_VERSION)
 MYPERL_DEBIAN	= debian
 MYPERL_NAME		= myperl
-MYPERL_VERS     = $(PERL_VERSION)+1
+MYPERL_VERS     = $(PERL_VERSION).$(MYPERL_RELEASE)
 MYPERL			= /opt/myperl/bin/perl
 MYPROVE			= /opt/myperl/bin/prove
+
+TT_VERSION_SYMBOLS = \
+					 --define PERL_VERSION="$(PERL_VERSION)" \
+					 --define MYPERL_RELEASE="$(MYPERL_RELEASE)"
 
 ############################################################
 # Debian Variables
@@ -29,7 +34,7 @@ DEB_MYPERL_TARBALL  = $(MYPERL_NAME)_$(MYPERL_VERS).orig.tar.bz2
 # SuSE Variables
 ############################################################
 
-SUSE_PKG		= $(MYPERL_NAME)-$(PERL_VERSION)-1.x86_64.rpm
+SUSE_PKG		= $(MYPERL_NAME)-$(PERL_VERSION)-$(MYPERL_RELEASE).x86_64.rpm
 
 -include Makefile.local
 
@@ -50,6 +55,11 @@ clean:
 # Note: this currently defaults to debian because that's what we
 # do our travis-ci on.
 test: debian-test
+
+.SUFFIXES: .template
+
+%:: %.template
+	cat $< | tpage $(TT_VERSION_SYMBOLS) $(TT_EXTRA_SYMBOLS) >$@
 
 ############################################################
 # Debian Targets
