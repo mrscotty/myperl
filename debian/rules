@@ -38,27 +38,27 @@ clean:
 build: myinfo
 	dh_testdir
 ifeq "$(TRAVIS)" "true"
-	@echo "travis_fold:start#{dh_auto_configure}"
+	@echo "travis_fold:start:dh_auto_configure"
 endif
 	# Instead of dh_auto_configure...
 	./Configure -des \
 		-Dprefix=$(DESTDIR)/opt/myperl \
 		-Duseshrplib
 ifeq "$(TRAVIS)" "true"
-	@echo "travis_fold:end#{dh_auto_configure}"
-	@echo "travis_fold:start#{dh_auto_build}"
+	@echo "travis_fold:end:dh_auto_configure"
+	@echo "travis_fold:start:dh_auto_build"
 endif
 	dh_auto_build
 ifeq "$(TRAVIS)" "true"
-	@echo "travis_fold:end#{dh_auto_build}"
+	@echo "travis_fold:end:dh_auto_build"
 endif
 	#dh_auto_test	# make -j1 test
 
 %:
 ifeq "$(TRAVIS)" "true"
-	@echo "travis_fold:start#{dh_$@}"
+	@echo "travis_fold:start:dh_$@"
 endif
 	dh $@ 
 ifeq "$(TRAVIS)" "true"
-	@echo "travis_fold:end#{dh_$@}"
+	@echo "travis_fold:end:dh_$@"
 endif
