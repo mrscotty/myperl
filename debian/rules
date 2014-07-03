@@ -11,7 +11,10 @@
 # Running all the Perl tests takes a *long* time
 export DEB_BUILD_OPTIONS=nocheck
 
+.PHONY: myinfo clean build
+
 myinfo:
+	@echo "MYINFO- TRAVIS=$(TRAVIS)"
 	@echo "MYINFO- DH_VERBOSE=$(DH_VERBOSE)"
 	@echo "MYINFO- DESTDIR=$(DESTDIR)"
 
@@ -32,7 +35,7 @@ clean:
 		\( -type d -a -name autom4te.cache -prune -exec rm -rf {} \; \) \)
 	rm -f *-stamp
 
-build:
+build: myinfo
 	dh_testdir
 ifeq "$(TRAVIS)" "true"
 	@echo "travis_fold:start#{dh_auto_configure}"

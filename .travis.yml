@@ -12,6 +12,7 @@ before_install:
 
 # Try to get debug from inst stuff
 install:
+    - echo "TRAVIS=$TRAVIS"
     - make fetch-perl
     - make debian
     - make debian-install
