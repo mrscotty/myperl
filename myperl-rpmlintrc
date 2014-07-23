@@ -1,0 +1,2 @@
+addFilter("myperl.* devel-file-in-non-devel-package")
+addFilter("myperl.* wrong-script-interpreter")
