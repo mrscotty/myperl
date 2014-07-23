@@ -108,3 +108,5 @@ $(SUSE_PKG): myperl.spec $(HOME)/rpmbuild/SOURCES/$(PERL_TARBALL)
 $(HOME)/rpmbuild/SOURCES/$(PERL_TARBALL): $(PERL_TARBALL)
 	cp -a $< $@
 
+suse-install:
+	sudo rpm -ivh $(SUSE_PKG)
