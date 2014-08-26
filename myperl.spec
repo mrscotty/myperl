@@ -155,6 +155,7 @@ the system Perl that comes with the distribution.
 #make %{?_smp_mflags}
 ./Configure -des \
     -Dprefix=/opt/myperl \
+    -Dvendorprefix=/opt/myperllib/vendor_perl \
     -Duseshrplib
 
 %check
