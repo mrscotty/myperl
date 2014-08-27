@@ -7,9 +7,9 @@ define perlcfg
 $(shell $(PERL) "-V:$1" | awk -F\' '{print $$2}')
 endef
 
-SITELIB		= $(call perlcfg,sitelib)
-SITEARCH	= $(call perlcfg,sitearch)
-SITELIBEXP	= $(DESTDIR)$(call perlcfg,sitelibexp)
+VENDORLIB		= $(call perlcfg,vendorlib)
+VENDORARCH	= $(call perlcfg,vendorarch)
+VENDORLIBEXP	= $(DESTDIR)$(call perlcfg,vendorlibexp)
 ARCHNAME	= $(call perlcfg,archname)
 ARCHLIB		= $(call perlcfg,archlib)
 PRIVLIB		= $(call perlcfg,privlib)
@@ -18,10 +18,10 @@ PRIVLIB		= $(call perlcfg,privlib)
 #MYPERL_PREFIX = /opt/myperl
 
 # Environment vars needed for proper Perl module installation
-export PERL5LIB		= $(DESTDIR)$(SITEARCH):$(DESTDIR)$(SITELIB)
-export PERL_MB_OPT	= "--destdir '$(DESTDIR)' --installdirs site"
-export PERL_MM_OPT	= "INSTALLDIRS=site DESTDIR=$(DESTDIR)"
-# INSTALLPRIVLIB=$(SITEARCH)"
+export PERL5LIB		= $(DESTDIR)$(VENDORARCH):$(DESTDIR)$(VENDORLIB)
+export PERL_MB_OPT	= "--destdir '$(DESTDIR)' --installdirs vendor"
+export PERL_MM_OPT	= "INSTALLDIRS=vendor DESTDIR=$(DESTDIR)"
+# INSTALLPRIVLIB=$(VENDORARCH)"
 
 include ../cpanm.mk
 
@@ -45,7 +45,7 @@ install: cpanm info
 	-rm $(DESTDIR)$(ARCHLIB)/perllocal.pod
 	-rmdir $(DESTDIR)$(ARCHLIB) $(DESTDIR)$(PRIVLIB)
 	# Cleanup for missing support in cpanm for DESTDIR with .meta files
-	#mv $(DESTDIR)/lib/perl5/$(ARCHNAME)/.meta $(DESTDIR)$(SITEARCH)/
+	#mv $(DESTDIR)/lib/perl5/$(ARCHNAME)/.meta $(DESTDIR)$(VENDORARCH)/
 	# try to *safely* remove the unneeded directories
 	#rmdir $(DESTDIR)/lib/perl5/$(ARCHNAME) $(DESTDIR)/lib/perl5 $(DESTDIR)/lib
 
