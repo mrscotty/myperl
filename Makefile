@@ -10,7 +10,7 @@
 
 PERL_SRCBASE	= http://ftp.gwdg.de/pub/languages/perl/CPAN/src/5.0
 PERL_VERSION	= 5.20.0
-MYPERL_RELEASE	= 1
+MYPERL_RELEASE	= 2
 PERL_TARBALL	= perl-$(PERL_VERSION).tar.bz2
 SRCDIR			= perl-$(PERL_VERSION)
 MYPERL_DEBIAN	= debian
@@ -90,7 +90,7 @@ debian-clean: clean
 		perl-$(MYPERL_VERS)
 
 debian-install: $(DEB_PKG)
-	sudo dpkg -i $(DEB_PKG)
+	$(SUDO) dpkg -i $(DEB_PKG)
 
 debian-test:
 	$(MYPROVE)
@@ -109,4 +109,4 @@ $(HOME)/rpmbuild/SOURCES/$(PERL_TARBALL): $(PERL_TARBALL)
 	cp -a $< $@
 
 suse-install:
-	sudo rpm -ivh $(SUSE_PKG)
+	$(SUDO) rpm -ivh $(SUSE_PKG)

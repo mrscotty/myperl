@@ -153,6 +153,10 @@ the system Perl that comes with the distribution.
 #mv savelib lib
 #./configure.gnu --prefix=/usr -Dvendorprefix=/usr -Dinstallusrbinperl -Dusethreads -Di_db -Di_dbm -Di_ndbm -Di_gdbm -Dd_dbm_open $options
 #make %{?_smp_mflags}
+
+# Note: setting vendorprefix=/opt/myperl actually causes it to use the
+# directories /opt/myperl/lib/vendor_perl/5.20.0 and
+# /opt/myperl/lib/vendor_perl/5.20.0/x86_64-linux
 ./Configure -des \
     -Dprefix=/opt/myperl \
     -Dvendorprefix=/opt/myperl \
