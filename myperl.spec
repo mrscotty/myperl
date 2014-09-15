@@ -22,7 +22,7 @@ Summary:        Local installation of the Perl interpreter
 License:        Artistic-1.0 or GPL-2.0+
 Group:          Development/Languages/Perl
 Version:        5.20.0
-Release:        2
+Release:        3
 Vendor:         OpenXPKI Project
 Packager:       Scott Hardin <scott@hnsc.de>
 Autoreqprov:    off
