@@ -160,6 +160,7 @@ the system Perl that comes with the distribution.
 ./Configure -des \
     -Dprefix=/opt/myperl \
     -Dvendorprefix=/opt/myperl \
+    -Duseithreads \
     -Duseshrplib
 
 %check
