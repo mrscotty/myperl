@@ -184,8 +184,17 @@ ARCHLIB=`%{__perl} "-V:archlib" | awk -F\' '{print $2}'`            # 'syntax
 PRIVLIB=`%{__perl} "-V:privlib" | awk -F\' '{print $2}'`            # 'syntax
 CPANM_OPTS="--notest --verbose --skip-satisfied --skip-installed"
 
+echo "===== DEBUG"
+echo "VENDORLIB=$VENDORLIB"
+echo "VENDORARCH=$VENDORARCH"
+echo "VENDORLIBEXP=$VENDORLIBEXP"
+echo "ARCHNAME=$ARCHNAME"
+echo "ARCHLIB=$ARCHLIB"
+echo "PRIVLIB=$PRIVLIB"
+echo "===== DEBUG"
+
 # Env vars needed for proper Perl module installation
-export PERL5LIB="$RPM_BUILD_ROOT/$(VENDORARCH):$RPM_BUILD_ROOT/$(VENDORLIB)"
+export PERL5LIB="$RPM_BUILD_ROOT/$VENDORARCH:$RPM_BUILD_ROOT/$VENDORLIB"
 export PERL_MB_OPT="--destdir '$RPM_BUILD_ROOT' --installdirs vendor"
 export PERL_MM_OPT="DESTDIR=$RPM_BUILD_ROOT INSTALLDIRS=vendor"
 
