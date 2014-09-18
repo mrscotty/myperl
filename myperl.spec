@@ -191,7 +191,10 @@ echo "VENDORLIBEXP=$VENDORLIBEXP"
 echo "ARCHNAME=$ARCHNAME"
 echo "ARCHLIB=$ARCHLIB"
 echo "PRIVLIB=$PRIVLIB"
+echo "output of 'perl -V'"
+perl -V
 echo "===== DEBUG"
+
 
 # Env vars needed for proper Perl module installation
 export PERL5LIB="$RPM_BUILD_ROOT/$VENDORARCH:$RPM_BUILD_ROOT/$VENDORLIB"
