@@ -170,7 +170,7 @@ export SUSE_ASNEEDED=0
 %endif
 
 %install
-MYPERL=$RPM_BUILD_ROOT/opt/myperl/bin/perl
+MYPERL="./miniperl -Ilib"
 make install DESTDIR=$RPM_BUILD_ROOT
 
 # Fetch cpanm
@@ -192,11 +192,7 @@ echo "VENDORLIBEXP=$VENDORLIBEXP"
 echo "ARCHNAME=$ARCHNAME"
 echo "ARCHLIB=$ARCHLIB"
 echo "PRIVLIB=$PRIVLIB"
-echo "output of 'perl -V'"
-perl -V
-echo "output of '$MYPERL -V'"
 echo "===== DEBUG"
-
 
 # Env vars needed for proper Perl module installation
 export PERL5LIB="$RPM_BUILD_ROOT/$VENDORARCH:$RPM_BUILD_ROOT/$VENDORLIB"
