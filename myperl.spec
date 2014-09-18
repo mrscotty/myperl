@@ -171,6 +171,29 @@ export SUSE_ASNEEDED=0
 
 %install
 make install DESTDIR=$RPM_BUILD_ROOT
+
+# Fetch cpanm
+curl -LO http://xrl.us/cpanm
+chmod +x cpanm
+
+VENDORLIB=`%{__perl} "-V:vendorlib" | awk -F\' '{print $2}'`        # 'syntax
+VENDORARCH=`%{__perl} "-V:vendorarch" | awk -F\' '{print $2}'`      # 'syntax
+VENDORLIBEXP=`%{__perl} "-V:vendorlibexp" | awk -F\' '{print $2}'`  # 'syntax
+ARCHNAME=`%{__perl} "-V:archname" | awk -F\' '{print $2}'`          # 'syntax
+ARCHLIB=`%{__perl} "-V:archlib" | awk -F\' '{print $2}'`            # 'syntax
+PRIVLIB=`%{__perl} "-V:privlib" | awk -F\' '{print $2}'`            # 'syntax
+CPANM_OPTS="--notest --verbose --skip-satisfied --skip-installed"
+
+# Env vars needed for proper Perl module installation
+export PERL5LIB="$RPM_BUILD_ROOT/$(VENDORARCH):$RPM_BUILD_ROOT/$(VENDORLIB)"
+export PERL_MB_OPT="--destdir '$RPM_BUILD_ROOT' --installdirs vendor"
+export PERL_MM_OPT="DESTDIR=$RPM_BUILD_ROOT INSTALLDIRS=vendor"
+
+# Install some CPAN dependencies to avoid conflicts
+# (e.g. between oxi and mysql)
+DESTDIR=$RPM_BUILD_ROOT %{__perl} cpanm $CPANM_OPTS Test::NoWarnings Test::Tester Test::Deep
+DESTDIR=$RPM_BUILD_ROOT %{__perl} cpanm $CPANM_OPTS CPAN::Meta
+
 %{__perl} -MFile::Find -le '
     find({ wanted => \&wanted, no_chdir => 1}, "%{buildroot}");
     for my $x (sort @dirs, @files) {
