@@ -34,7 +34,7 @@ DEB_MYPERL_TARBALL  = $(MYPERL_NAME)_$(MYPERL_VERS).orig.tar.bz2
 # SuSE Variables
 ############################################################
 
-SUSE_PKG		= $(MYPERL_NAME)-$(PERL_VERSION)-$(MYPERL_RELEASE).x86_64.rpm
+SUSE_PKG		= $(HOME)/rpmbuild/RPMS/x86_64/$(MYPERL_NAME)-$(PERL_VERSION)-$(MYPERL_RELEASE).x86_64.rpm
 
 -include Makefile.local
 
@@ -103,10 +103,9 @@ suse: $(SUSE_PKG)
 
 $(SUSE_PKG): myperl.spec $(HOME)/rpmbuild/SOURCES/$(PERL_TARBALL)
 	rpmbuild -bb $<
-	mv $(HOME)/rpmbuild/RPMS/x86_64/$(SUSE_PKG) .
 
 $(HOME)/rpmbuild/SOURCES/$(PERL_TARBALL): $(PERL_TARBALL)
 	cp -a $< $@
 
-suse-install:
+suse-install: $(SUSE_PKG)
 	$(SUDO) rpm -ivh $(SUSE_PKG)
