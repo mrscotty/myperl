@@ -8,7 +8,7 @@ Architecture: any
 Recommends:
 Section: perl
 Priority: optional
-Depends: ${perl:Depends}, ${shlibs:Depends}
+Depends: ${shlibs:Depends}
 Description: myperl is a local Perl installation
  This package contains a full base Perl installation that may be used
  and maintained independently of the base Perl installed by the underlying
