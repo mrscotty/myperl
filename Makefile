@@ -9,8 +9,8 @@
 #
 
 PERL_SRCBASE	= http://ftp.gwdg.de/pub/languages/perl/CPAN/src/5.0
-PERL_VERSION	= 5.20.0
-MYPERL_RELEASE	= 3
+PERL_VERSION	= 5.20.1
+MYPERL_RELEASE	= 1
 PERL_TARBALL	= perl-$(PERL_VERSION).tar.bz2
 SRCDIR			= perl-$(PERL_VERSION)
 MYPERL_DEBIAN	= debian

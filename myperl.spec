@@ -21,12 +21,12 @@ Name:           myperl
 Summary:        Local installation of the Perl interpreter
 License:        Artistic-1.0 or GPL-2.0+
 Group:          Development/Languages/Perl
-Version:        5.20.0
-Release:        3
+%define pversion 5.20.1
+Version:        %{pversion}
+Release:        1
 Vendor:         OpenXPKI Project
 Packager:       Scott Hardin <scott@hnsc.de>
 Autoreqprov:    off
-%define pversion 5.20.0
 Url:            http://www.perl.org/
 Source:         http://www.cpan.org/src/5.0/perl-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
