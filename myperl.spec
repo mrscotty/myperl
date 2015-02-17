@@ -204,6 +204,7 @@ export PERL_MM_OPT="DESTDIR=$RPM_BUILD_ROOT INSTALLDIRS=vendor"
 # (e.g. between oxi and mysql)
 DESTDIR=$RPM_BUILD_ROOT $MYPERL cpanm $CPANM_OPTS Test::NoWarnings Test::Tester Test::Deep
 DESTDIR=$RPM_BUILD_ROOT $MYPERL cpanm $CPANM_OPTS CPAN::Meta
+DESTDIR=$RPM_BUILD_ROOT $MYPERL cpanm $CPANM_OPTS ExtUtils::MakeMaker
 fi
 
 %{__perl} -MFile::Find -le '
