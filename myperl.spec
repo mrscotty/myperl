@@ -173,7 +173,7 @@ export SUSE_ASNEEDED=0
 MYPERL="./miniperl -Ilib"
 make install DESTDIR=$RPM_BUILD_ROOT
 
-if false; then # disable this whole block for now
+#if false; then # disable this whole block for now
 # Fetch cpanm
 curl -LO http://xrl.us/cpanm
 chmod +x cpanm
@@ -202,10 +202,13 @@ export PERL_MM_OPT="DESTDIR=$RPM_BUILD_ROOT INSTALLDIRS=vendor"
 
 # Install some CPAN dependencies to avoid conflicts
 # (e.g. between oxi and mysql)
-DESTDIR=$RPM_BUILD_ROOT $MYPERL cpanm $CPANM_OPTS Test::NoWarnings Test::Tester Test::Deep
-DESTDIR=$RPM_BUILD_ROOT $MYPERL cpanm $CPANM_OPTS CPAN::Meta
+#DESTDIR=$RPM_BUILD_ROOT $MYPERL cpanm $CPANM_OPTS Test::NoWarnings Test::Tester Test::Deep
+#DESTDIR=$RPM_BUILD_ROOT $MYPERL cpanm $CPANM_OPTS CPAN::Meta
+
+# NOTE: ExtUtils::MakeMaker that comes with Perl 5.20.1 seems to
+# be outdated, so let's force an update here.
 DESTDIR=$RPM_BUILD_ROOT $MYPERL cpanm $CPANM_OPTS ExtUtils::MakeMaker
-fi
+#fi
 
 %{__perl} -MFile::Find -le '
     find({ wanted => \&wanted, no_chdir => 1}, "%{buildroot}");
