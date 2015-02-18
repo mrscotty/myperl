@@ -109,3 +109,6 @@ $(HOME)/rpmbuild/SOURCES/$(PERL_TARBALL): $(PERL_TARBALL)
 
 suse-install: $(SUSE_PKG)
 	$(SUDO) rpm -ivh $(SUSE_PKG)
+
+suse-clean:
+	rm -rf $(SUSE_PKG)
