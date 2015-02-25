@@ -157,7 +157,7 @@ the system Perl that comes with the distribution.
 # Note: setting vendorprefix=/opt/myperl actually causes it to use the
 # directories /opt/myperl/lib/vendor_perl/5.20.0 and
 # /opt/myperl/lib/vendor_perl/5.20.0/x86_64-linux
-./Configure -des \
+./Configure -des $PERL_CONFIGURE_OPTS \
     -Dprefix=/opt/myperl \
     -Dvendorprefix=/opt/myperl \
     -Duseithreads \
