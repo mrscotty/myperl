@@ -29,6 +29,7 @@ Packager:       Scott Hardin <scott@hnsc.de>
 Autoreqprov:    off
 Url:            http://www.perl.org/
 Source:         http://www.cpan.org/src/5.0/perl-%{version}.tar.bz2
+Source1:        cpanm
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 #PreReq:         perl-base = %version
 #PreReq:         %fillup_prereq
@@ -111,6 +112,9 @@ the system Perl that comes with the distribution.
 
 %prep
 %setup -q -n perl-%{pversion}
+#%setup -a 1 -n perl-%{pversion}
+pwd
+cp -a %{S:1} .
 #cp -p %{S:3} .
 #%patch0
 #%patch1
@@ -163,6 +167,9 @@ the system Perl that comes with the distribution.
     -Duseithreads \
     -Duseshrplib
 
+# Change shebang in cpanm to myperl
+perl -i -pe 's{#!/usr/bin/env perl}{#!/opt/myperl/bin/perl}' cpanm
+
 %check
 %ifnarch %arm
 export SUSE_ASNEEDED=0
@@ -172,6 +179,10 @@ export SUSE_ASNEEDED=0
 %install
 MYPERL="./miniperl -Ilib"
 make install DESTDIR=$RPM_BUILD_ROOT
+set -x
+ls -la
+cp -a cpanm $RPM_BUILD_ROOT/opt/myperl/bin/
+chmod 0755 $RPM_BUILD_ROOT/opt/myperl/bin/cpanm
 
 # disable this whole block for now -- using cpanm with miniperl
 # doesn't work out-of-the-box, so defer other modules to the

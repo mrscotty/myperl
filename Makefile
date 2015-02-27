@@ -49,6 +49,13 @@ fetch-perl: $(PERL_TARBALL)
 $(PERL_TARBALL):
 	wget -O $@ $(PERL_SRCBASE)/$(PERL_TARBALL)
 
+fetch-cpanm: cpanm
+
+cpanm:
+	wget -O $@ \
+		https://raw.githubusercontent.com/miyagawa/cpanminus/master/cpanm
+	chmod 0755 $@
+
 clean:
 	rm -rf $(SRCDIR)
 
@@ -101,10 +108,15 @@ debian-test:
 
 suse: $(SUSE_PKG)
 
-$(SUSE_PKG): myperl.spec $(HOME)/rpmbuild/SOURCES/$(PERL_TARBALL)
+$(SUSE_PKG): myperl.spec \
+		$(HOME)/rpmbuild/SOURCES/$(PERL_TARBALL) \
+		$(HOME)/rpmbuild/SOURCES/cpanm
 	rpmbuild -bb $<
 
 $(HOME)/rpmbuild/SOURCES/$(PERL_TARBALL): $(PERL_TARBALL)
+	cp -a $< $@
+
+$(HOME)/rpmbuild/SOURCES/cpanm: cpanm
 	cp -a $< $@
 
 suse-install: $(SUSE_PKG)
