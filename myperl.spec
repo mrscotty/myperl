@@ -93,7 +93,7 @@ Provides:       myperl-version
 Obsoletes:      myperl-version
 Provides:       myperl-Digest
 Provides:       myperl-Digest-MD5
-%define filelist %{pkgname}-%{version}-filelist
+%define filelist %{name}-%{version}-filelist
 
 %description
 myperl - Local Version of Practical Extraction and Report Language
@@ -163,7 +163,11 @@ cp -a %{S:1} .
 # /opt/myperl/lib/vendor_perl/5.20.0/x86_64-linux
 ./Configure -des $PERL_CONFIGURE_OPTS \
     -Dprefix=/opt/myperl \
+    -Dman1dir=/opt/myperl/man/man1 \
+    -Dman3dir=/opt/myperl/man/man3 \
     -Dvendorprefix=/opt/myperl \
+    -Dvendorman1dir=/opt/myperl/man/man1 \
+    -Dvendorman3dir=/opt/myperl/man/man3 \
     -Duseithreads \
     -Duseshrplib
 
