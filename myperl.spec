@@ -21,7 +21,7 @@ Name:           myperl
 Summary:        Local installation of the Perl interpreter
 License:        Artistic-1.0 or GPL-2.0+
 Group:          Development/Languages/Perl
-%define pversion 5.20.1
+%define pversion 5.20.2
 Version:        %{pversion}
 Release:        1
 Vendor:         OpenXPKI Project
