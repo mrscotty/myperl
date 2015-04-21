@@ -42,7 +42,10 @@ SUSE_PKG		= $(HOME)/rpmbuild/RPMS/x86_64/$(MYPERL_NAME)-$(PERL_VERSION)-$(MYPERL
 # Generic Targets
 ############################################################
 
-.PHONY: fetch-perl clean test
+.PHONY: suse-ver-string fetch-perl clean test
+
+suse-ver-string:
+	@echo "$(PERL_VERSION)-$(MYPERL_RELEASE)"
 
 fetch-perl: $(PERL_TARBALL)
 
