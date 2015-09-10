@@ -9,7 +9,7 @@
 #
 
 PERL_SRCBASE	= http://ftp.gwdg.de/pub/languages/perl/CPAN/src/5.0
-PERL_VERSION	= 5.20.2
+PERL_VERSION	= 5.22.0
 MYPERL_RELEASE	= 1
 PERL_TARBALL	= perl-$(PERL_VERSION).tar.bz2
 SRCDIR			= perl-$(PERL_VERSION)
