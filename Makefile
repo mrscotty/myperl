@@ -44,6 +44,9 @@ SUSE_PKG		= $(HOME)/rpmbuild/RPMS/x86_64/$(MYPERL_NAME)-$(PERL_VERSION)-$(MYPERL
 
 .PHONY: suse-ver-string fetch-perl clean test
 
+perl-ver-string:
+	@echo "$(PERL_VERSION)"
+
 suse-ver-string:
 	@echo "$(PERL_VERSION)-$(MYPERL_RELEASE)"
 
