@@ -9,7 +9,7 @@
 #
 
 PERL_SRCBASE	= http://ftp.gwdg.de/pub/languages/perl/CPAN/src/5.0
-PERL_VERSION	= 5.20.0
+PERL_VERSION	= 5.22.0
 MYPERL_RELEASE	= 1
 PERL_TARBALL	= perl-$(PERL_VERSION).tar.bz2
 SRCDIR			= perl-$(PERL_VERSION)
@@ -34,7 +34,7 @@ DEB_MYPERL_TARBALL  = $(MYPERL_NAME)_$(MYPERL_VERS).orig.tar.bz2
 # SuSE Variables
 ############################################################
 
-SUSE_PKG		= $(MYPERL_NAME)-$(PERL_VERSION)-$(MYPERL_RELEASE).x86_64.rpm
+SUSE_PKG		= $(HOME)/rpmbuild/RPMS/x86_64/$(MYPERL_NAME)-$(PERL_VERSION)-$(MYPERL_RELEASE).x86_64.rpm
 
 -include Makefile.local
 
@@ -42,12 +42,25 @@ SUSE_PKG		= $(MYPERL_NAME)-$(PERL_VERSION)-$(MYPERL_RELEASE).x86_64.rpm
 # Generic Targets
 ############################################################
 
-.PHONY: fetch-perl clean test
+.PHONY: suse-ver-string fetch-perl clean test
+
+perl-ver-string:
+	@echo "$(PERL_VERSION)"
+
+suse-ver-string:
+	@echo "$(PERL_VERSION)-$(MYPERL_RELEASE)"
 
 fetch-perl: $(PERL_TARBALL)
 
 $(PERL_TARBALL):
 	wget -O $@ $(PERL_SRCBASE)/$(PERL_TARBALL)
+
+fetch-cpanm: cpanm
+
+cpanm:
+	wget -O $@ \
+		https://raw.githubusercontent.com/miyagawa/cpanminus/master/cpanm
+	chmod 0755 $@
 
 clean:
 	rm -rf $(SRCDIR)
@@ -90,7 +103,7 @@ debian-clean: clean
 		perl-$(MYPERL_VERS)
 
 debian-install: $(DEB_PKG)
-	sudo dpkg -i $(DEB_PKG)
+	$(SUDO) dpkg -i $(DEB_PKG)
 
 debian-test:
 	$(MYPROVE)
@@ -101,10 +114,19 @@ debian-test:
 
 suse: $(SUSE_PKG)
 
-$(SUSE_PKG): myperl.spec $(HOME)/rpmbuild/SOURCES/$(PERL_TARBALL)
+$(SUSE_PKG): myperl.spec \
+		$(HOME)/rpmbuild/SOURCES/$(PERL_TARBALL) \
+		$(HOME)/rpmbuild/SOURCES/cpanm
 	rpmbuild -bb $<
-	mv $(HOME)/rpmbuild/RPMS/x86_64/$(SUSE_PKG) .
 
 $(HOME)/rpmbuild/SOURCES/$(PERL_TARBALL): $(PERL_TARBALL)
 	cp -a $< $@
 
+$(HOME)/rpmbuild/SOURCES/cpanm: cpanm
+	cp -a $< $@
+
+suse-install: $(SUSE_PKG)
+	$(SUDO) rpm -ivh $(SUSE_PKG)
+
+suse-clean:
+	rm -rf $(SUSE_PKG)
