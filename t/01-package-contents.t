@@ -11,8 +11,8 @@ use Test::More;
 # Check that specific files exist (and are not empty)
 ############################################################
 #ok(-s '/opt/myperl/bin/cpanm', "cpanm exists");
-is(`dpkg -S /opt/myperl/bin/cpanm`, "myperl-buildtools: /opt/myperl/bin/cpanm\n",
-    "cpanm is installed by buildtools");
+is(`dpkg -S /opt/myperl/bin/myperl`, "myperl: /opt/myperl/bin/myperl\n",
+    "myperl is installed");
 
 ############################################################
 # Check that each package was installed
