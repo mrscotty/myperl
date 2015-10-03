@@ -15,6 +15,6 @@ install:
     - echo "TRAVIS=$TRAVIS"
     - make fetch-perl
     - make debian
-    - make debian-install
+    - sudo make debian-install
     - "(cd ex/libdbd-mysql-myperl && make package)"
     - sudo dpkg -i ex/libdbd-mysql-myperl*.deb
