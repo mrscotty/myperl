@@ -11,7 +11,7 @@ use Test::More;
 # Check that specific files exist (and are not empty)
 ############################################################
 #ok(-s '/opt/myperl/bin/cpanm', "cpanm exists");
-is(`dpkg -S /opt/myperl/bin/myperl`, "myperl: /opt/myperl/bin/myperl\n",
+is(`dpkg -S /opt/myperl/bin/perl`, "myperl: /opt/myperl/bin/perl\n",
     "myperl is installed");
 
 ############################################################
@@ -33,7 +33,7 @@ close $fh or die "Error closing find filehandle: $!";
 $dirlist = [ sort @{ $dirlist } ];
 
 my $pkgfilelisthash = {};
-foreach my $pkg (qw( myperl libdbd-mysql-myperl openxpki-core-deps-myperl libopenxpki-perl)) {
+foreach my $pkg (qw( myperl myperl-dbd-mysql myperl-openxpki-core-deps myperl-openxpki-core)) {
     open( $fh, "dpkg -L $pkg|" ) or die "Error running 'dpkg -L $pkg': $!";
     while (<$fh>) {
         chomp;

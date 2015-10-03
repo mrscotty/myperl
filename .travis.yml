@@ -16,5 +16,7 @@ install:
     - make fetch-perl
     - make debian
     - sudo make debian-install
+    - ls -l /opt/myperl/bin
+    - dpkg -l | grep myperl
     - "(cd ex/libdbd-mysql-myperl && make package)"
     - sudo dpkg -i ex/libdbd-mysql-myperl*.deb
