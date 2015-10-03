@@ -15,7 +15,7 @@ PERL_TARBALL	= perl-$(PERL_VERSION).tar.bz2
 SRCDIR			= perl-$(PERL_VERSION)
 MYPERL_DEBIAN	= debian
 MYPERL_NAME		= myperl
-MYPERL_VERS     = $(PERL_VERSION).$(MYPERL_RELEASE)
+MYPERL_VERS     = $(PERL_VERSION)
 MYPERL			= /opt/myperl/bin/perl
 MYPROVE			= /opt/myperl/bin/prove
 
@@ -23,11 +23,15 @@ TT_VERSION_SYMBOLS = \
 					 --define PERL_VERSION="$(PERL_VERSION)" \
 					 --define MYPERL_RELEASE="$(MYPERL_RELEASE)"
 
+ifeq "$(SRCDIR)" "/"
+	$(error Let us not go to far with this)
+endif
+
 ############################################################
 # Debian Variables
 ############################################################
 
-DEB_PKG			= $(MYPERL_NAME)_$(MYPERL_VERS)_amd64.deb
+DEB_PKG			= $(MYPERL_NAME)_$(MYPERL_VERS)-$(MYPERL_RELEASE)_amd64.deb
 DEB_MYPERL_TARBALL  = $(MYPERL_NAME)_$(MYPERL_VERS).orig.tar.bz2
 
 ############################################################
@@ -42,13 +46,16 @@ SUSE_PKG		= $(HOME)/rpmbuild/RPMS/x86_64/$(MYPERL_NAME)-$(PERL_VERSION)-$(MYPERL
 # Generic Targets
 ############################################################
 
-.PHONY: suse-ver-string fetch-perl clean test
+.PHONY: suse-ver-string debian-ver-string fetch-perl clean test
 
 perl-ver-string:
 	@echo "$(PERL_VERSION)"
 
-suse-ver-string:
+suse-ver-string debian-ver-string:
 	@echo "$(PERL_VERSION)-$(MYPERL_RELEASE)"
+
+myperl-deb-release:
+	@echo "$(MYPERL_RELEASE)"
 
 fetch-perl: $(PERL_TARBALL)
 
@@ -76,30 +83,41 @@ test: debian-test
 
 ############################################################
 # Debian Targets
+#
+# For information on Debian packaging, see:
+#
+# 	https://wiki.debian.org/IntroDebianPackaging
+#
 ############################################################
 
 .PHONY: debian debian-clean debian-install debian-test
 
 debian: $(DEB_PKG)
 
+# This is "Step 1" in the debian packaging intro
 $(DEB_MYPERL_TARBALL): $(PERL_TARBALL)
 	cp --archive $< $@
 
-$(DEB_PKG): $(DEB_MYPERL_TARBALL)
-	# unpack Perl tarball
-	tar xjf $(PERL_TARBALL)
-	# copy over the debian/ stuff
+$(DEB_PKG): $(DEB_MYPERL_TARBALL) $(shell find debian -type f)
+	# delete previous build, if exists
+	rm -rf $(SRCDIR)
+	# unpack Perl tarball ("Step 2" of the debian packaging intro)
+	tar xjf $(DEB_MYPERL_TARBALL)
+	# BEGIN "Step 3" of the debian packaging intro...
 	tar cf -  debian | tar xf - -C $(SRCDIR)
 	# update changelog
-	cd $(SRCDIR) && debchange --create --package $(MYPERL_NAME) --newversion $(MYPERL_VERS) autobuild
+	cd $(SRCDIR) && debchange --create --package $(MYPERL_NAME) --newversion $(MYPERL_VERS)-$(MYPERL_RELEASE) autobuild
+	# according to docs, this should be '9'
+	echo "9" > debian/compat
+	# END "Step 3"
 	# build the package
 	cd $(SRCDIR) && dpkg-buildpackage -us -uc
 
 debian-clean: clean
 	rm -rf $(DEB_PKG) \
 		$(DEB_MYPERL_TARBALL) \
-		$(MYPERL_NAME)_$(MYPERL_VERS).debian.tar.gz \
-	    $(MYPERL_NAME)_$(MYPERL_VERS).dsc \
+		$(MYPERL_NAME)_$(MYPERL_VERS)-$(MYPERL_RELEASE).debian.tar.gz \
+	    $(MYPERL_NAME)_$(MYPERL_VERS)-$(MYPERL_RELEASE).dsc \
 		perl-$(MYPERL_VERS)
 
 debian-install: $(DEB_PKG)
