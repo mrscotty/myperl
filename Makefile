@@ -46,13 +46,16 @@ SUSE_PKG		= $(HOME)/rpmbuild/RPMS/x86_64/$(MYPERL_NAME)-$(PERL_VERSION)-$(MYPERL
 # Generic Targets
 ############################################################
 
-.PHONY: suse-ver-string debian-ver-string fetch-perl clean test
+.PHONY: perl-ver-string suse-ver-string myperl-release myperl-deb-release fetch-perl clean test
 
 perl-ver-string:
 	@echo "$(PERL_VERSION)"
 
 suse-ver-string debian-ver-string:
 	@echo "$(PERL_VERSION)-$(MYPERL_RELEASE)"
+
+myperl-release:
+	@echo "$(MYPERL_RELEASE)"
 
 myperl-deb-release:
 	@echo "$(MYPERL_RELEASE)"
