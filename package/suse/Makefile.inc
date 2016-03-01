@@ -11,8 +11,12 @@
 # Common definitions for all SuSE package Makefiles
 # for myperl subpackages
 
-PERL_VERSION=5.20.2
-MYPERL_RELEASE=1
+ifndef PERL_VERSION
+$(error PERL_VERSION not defined)
+endif
+ifndef MYPERL_RELEASE
+$(error MYPERL_RELEASE not defined)
+endif
 
 # standard directory for RPM builds, to override this use Makefile.local
 # or by setting it in your shell environment
