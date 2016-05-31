@@ -68,9 +68,10 @@ $(PERL_TARBALL):
 fetch-cpanm: cpanm
 
 cpanm:
-	wget -O $@ \
+	wget -O $@.new --no-check-certificate \
 		https://raw.githubusercontent.com/miyagawa/cpanminus/master/cpanm
-	chmod 0755 $@
+	chmod 0755 $@.new
+	mv $@.new $@
 
 clean:
 	rm -rf $(SRCDIR)
