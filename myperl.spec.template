@@ -30,6 +30,8 @@ Autoreqprov:    off
 Url:            http://www.perl.org/
 Source:         http://www.cpan.org/src/5.0/perl-%{version}.tar.bz2
 Source1:        cpanm
+# rpmlintrc is needed to supress errors in the checking... 
+Source2:        perl-rpmlintrc
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 #PreReq:         perl-base = %version
 #PreReq:         %fillup_prereq

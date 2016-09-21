@@ -23,7 +23,7 @@ group:     Applications/CPAN
 url:       http://www.openxpki.org
 buildroot: %{_tmppath}/%{name}-%{version}-%(id -u -n)
 prefix:    %(echo %{_prefix})
-BuildRequires: myperl
+BuildRequires: myperl myperl-dbi libmysqlclient-devel myperl-buildtools
 Requires: myperl myperl-dbi
 # When using our own OpenSSL that may have been locally compiled, the 
 # automatic search for prereqs will add libcrypto and libssl, which
@@ -32,6 +32,7 @@ Requires: myperl myperl-dbi
 # TODO: add myperl-openssl as new package?
 AutoReqProv: no
 #source:    %{pkgname}-%{version}.tar.gz
+Source1:    https://cpan.metacpan.org/authors/id/C/CA/CAPTTOFU/DBD-mysql-4.033.tar.gz
 
 %description
 DBD::mysql packaged for myperl
@@ -70,8 +71,9 @@ export PERL_MB_OPT="--destdir '%{buildroot}' --installdirs vendor"
 export PERL_MM_OPT="INSTALLDIRS=vendor DESTDIR=%{buildroot}"
 export DESTDIR="%{buildroot}"
 
-$CPANM $CPANM_OPTS Test::NoWarnings
-$CPANM $CPANM_OPTS Test::Tester Test::Deep DBD::mysql
+#$CPANM $CPANM_OPTS Test::NoWarnings
+#$CPANM $CPANM_OPTS Test::Tester Test::Deep DBD::mysql
+$CPANM $CPANM_OPTS %{SOURCE1}
 
 cmd=/usr/share/spec-helper/compress_files
 [ -x $cmd ] || cmd=/usr/lib/rpm/brp-compress

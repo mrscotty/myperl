@@ -29,6 +29,8 @@ Requires: myperl
 # supplied by the libexpat1 SLES package.
 AutoReqProv: no
 #source:    %{pkgname}-%{version}.tar.gz
+Source1:    https://cpan.metacpan.org/authors/id/T/TI/TIMB/DBI-1.636.tar.gz
+
 
 %description
 DBI packaged for myperl
@@ -66,7 +68,7 @@ export PERL_MB_OPT="--destdir '%{buildroot}' --installdirs vendor"
 export PERL_MM_OPT="INSTALLDIRS=vendor DESTDIR=%{buildroot}"
 export DESTDIR="%{buildroot}"
 
-$CPANM $CPANM_OPTS DBI
+$CPANM $CPANM_OPTS %{SOURCE1}
 
 cmd=/usr/share/spec-helper/compress_files
 [ -x $cmd ] || cmd=/usr/lib/rpm/brp-compress
@@ -79,9 +81,13 @@ find %{buildroot} -name "perllocal.pod" \
     |xargs -i rm -f {}
 
 
-%{__perl} -MFile::Find -le '
+%{__perl} -MFile::Find -MConfig -le '
     find({ wanted => \&wanted, no_chdir => 1}, "%{buildroot}");
     #print "%doc  README.md";
+    print "%dir /opt/myperl/lib/vendor_perl";
+    print "%dir $Config{vendorarch}";
+    print "%dir $Config{vendorarch}/auto";
+    print "%dir $Config{vendorlib}";
     for my $x (sort @dirs, @files) {
         push @ret, $x unless indirs($x);
         }

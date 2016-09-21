@@ -23,12 +23,13 @@ group:     Applications/CPAN
 url:       http://www.openxpki.org
 buildroot: %{_tmppath}/%{name}-%{version}-%(id -u -n)
 prefix:    %(echo %{_prefix})
-BuildRequires: myperl
+BuildRequires: myperl oracle-xe
 Requires: myperl myperl-dbi
 # Some oracle installations are so complicated that they don't package the libcltsh.so directly,
 # but have some convoluted install script that unpacks it from somewhere else.
 AutoReqProv: no
 #source:    %{pkgname}-%{version}.tar.gz
+Source2:    https://cpan.metacpan.org/authors/id/P/PY/PYTHIAN/DBD-Oracle-1.74.tar.gz
 
 %description
 DBD::Oracle packaged for myperl
@@ -66,8 +67,9 @@ export PERL_MB_OPT="--destdir '%{buildroot}' --installdirs vendor"
 export PERL_MM_OPT="INSTALLDIRS=vendor DESTDIR=%{buildroot}"
 export DESTDIR="%{buildroot}"
 
-$CPANM $CPANM_OPTS Test::NoWarnings
-$CPANM $CPANM_OPTS Test::Tester Test::Deep DBD::Oracle
+#$CPANM $CPANM_OPTS Test::NoWarnings
+#$CPANM $CPANM_OPTS Test::Tester Test::Deep DBD::Oracle
+$CPANM $CPANM_OPTS %{SOURCE1}
 
 cmd=/usr/share/spec-helper/compress_files
 [ -x $cmd ] || cmd=/usr/lib/rpm/brp-compress
@@ -84,9 +86,13 @@ find %{buildroot} -name "perllocal.pod" \
 #    -type d -depth                      \
 #    -exec rmdir {} \; 2>/dev/null
 
-%{__perl} -MFile::Find -le '
+%{__perl} -MFile::Find -MConfig -le '
     find({ wanted => \&wanted, no_chdir => 1}, "%{buildroot}");
     #print "%doc  README.md";
+    print "%dir /opt/myperl/lib/vendor_perl";
+    print "%dir $Config{vendorarch}";
+    print "%dir $Config{vendorarch}/auto";
+    print "%dir $Config{vendorlib}";
     for my $x (sort @dirs, @files) {
         push @ret, $x unless indirs($x);
         }

@@ -105,6 +105,56 @@ To build libdbd-mysql, for example, run the following:
 
     cd ex/libdbd-mysql-myperl && make package
 
+# openSUSE:Build
+
+For building on openSUSE:build, follow the instructions in the tutorial:
+
+    https://en.opensuse.org/openSUSE:Build_Service_Tutorial
+
+In the Source Files list, add the http(s) links to the cpanm script
+and perl tarball. Upload myperl.spec (you need to run "make myperl.spec"
+to generate this from the template) and perl-rpmlintrc.
+
+## myperl
+
+    make myperl.spec
+
+## myperl-buildtools
+
+Create the myperl-buildtools.spec:
+
+    make myperl-buildtools.spec
+
+Add the following sources to the OBS package:
+
+    https://cpan.metacpan.org/authors/id/L/LE/LEONT/Module-Build-0.4218.tar.gz
+    https://cpan.metacpan.org/authors/id/C/CH/CHORNY/Class-Std-0.013.tar.gz
+    https://cpan.metacpan.org/authors/id/B/BR/BRICKER/Config-Std-0.901.tar.gz
+    https://cpan.metacpan.org/authors/id/A/AD/ADAMK/Test-NoWarnings-1.04.tar.gz
+    https://cpan.metacpan.org/authors/id/E/EX/EXODIST/Test-Simple-1.302031.tar.gz
+    https://cpan.metacpan.org/authors/id/R/RJ/RJBS/Test-Deep-1.120.tar.gz
+
+## myperl-dbi
+
+Create the myperl-dbi.spec:
+
+    make myperl-dbi.spec
+
+Add the spec file and the following sources to the OBS package:
+
+    https://cpan.metacpan.org/authors/id/T/TI/TIMB/DBI-1.636.tar.gz
+
+## myperl-fcgi
+
+Create the myperl-fcgi.spec:
+
+    make myperl-fcgi.spec
+
+Add the spec file and the following sources to the OBS package:
+
+    https://cpan.metacpan.org/authors/id/E/ET/ETHER/FCGI-0.78.tar.gz
+
+
 # ADDITIONAL INFO
 
 ## TROUBLESHOOTING

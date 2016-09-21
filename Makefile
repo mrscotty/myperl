@@ -18,6 +18,8 @@ MYPERL_NAME		= myperl
 MYPERL_VERS     = $(PERL_VERSION)
 MYPERL			= /opt/myperl/bin/perl
 MYPROVE			= /opt/myperl/bin/prove
+export PERL_VERSION
+export MYPERL_RELEASE
 
 TT_VERSION_SYMBOLS = \
 					 --define PERL_VERSION="$(PERL_VERSION)" \
@@ -152,3 +154,47 @@ suse-install: $(SUSE_PKG)
 
 suse-clean:
 	rm -rf $(SUSE_PKG)
+
+
+############################################################
+# Open Build SuSE
+############################################################
+
+obs: myperl.spec myperl-buildtools.spec myperl-dbi.spec myperl-fcgi.spec myperl-dbd-mysql.spec myperl-dbd-oracle.spec
+
+myperl-buildtools.spec: package/suse/myperl-buildtools/myperl-buildtools.spec
+	cp -a $< $@
+
+package/suse/myperl-buildtools/myperl-buildtools.spec: package/suse/myperl-buildtools/myperl-buildtools.spec.template
+	cd package/suse/myperl-buildtools && \
+		make STATIC_TARBALLS=1 myperl-buildtools.spec
+
+myperl-dbi.spec: package/suse/myperl-dbi/myperl-dbi.spec
+	cp -a $< $@
+
+package/suse/myperl-dbi/myperl-dbi.spec: package/suse/myperl-dbi/myperl-dbi.spec.template
+	cd package/suse/myperl-dbi && \
+		make STATIC_TARBALLS=1 myperl-dbi.spec
+
+myperl-fcgi.spec: package/suse/myperl-fcgi/myperl-fcgi.spec
+	cp -a $< $@
+
+package/suse/myperl-fcgi/myperl-fcgi.spec: package/suse/myperl-fcgi/myperl-fcgi.spec.template
+	cd package/suse/myperl-fcgi && \
+		make STATIC_TARBALLS=1 myperl-fcgi.spec
+
+myperl-dbd-mysql.spec: package/suse/myperl-dbd-mysql/myperl-dbd-mysql.spec
+	cp -a $< $@
+
+package/suse/myperl-dbd-mysql/myperl-dbd-mysql.spec: package/suse/myperl-dbd-mysql/myperl-dbd-mysql.spec.template
+	cd package/suse/myperl-dbd-mysql && \
+		make STATIC_TARBALLS=1 myperl-dbd-mysql.spec
+
+myperl-dbd-oracle.spec: package/suse/myperl-dbd-oracle/myperl-dbd-oracle.spec
+	cp -a $< $@
+
+package/suse/myperl-dbd-oracle/myperl-dbd-oracle.spec: package/suse/myperl-dbd-oracle/myperl-dbd-oracle.spec.template
+	cd package/suse/myperl-dbd-oracle && \
+		STATIC_TARBALLS=1 make myperl-dbd-oracle.spec
+
+
