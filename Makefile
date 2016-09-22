@@ -76,7 +76,7 @@ cpanm:
 	mv $@.new $@
 
 clean:
-	rm -rf $(SRCDIR)
+	rm -rf $(SRCDIR) myperl.spec
 
 # Note: this currently defaults to debian because that's what we
 # do our travis-ci on.
