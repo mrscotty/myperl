@@ -29,7 +29,9 @@ Requires: myperl myperl-dbi
 # but have some convoluted install script that unpacks it from somewhere else.
 AutoReqProv: no
 #source:    %{pkgname}-%{version}.tar.gz
+[% IF STATIC_TARBALLS %]
 Source2:    https://cpan.metacpan.org/authors/id/P/PY/PYTHIAN/DBD-Oracle-1.74.tar.gz
+[% END %]
 
 %description
 DBD::Oracle packaged for myperl
@@ -69,7 +71,11 @@ export DESTDIR="%{buildroot}"
 
 #$CPANM $CPANM_OPTS Test::NoWarnings
 #$CPANM $CPANM_OPTS Test::Tester Test::Deep DBD::Oracle
+[% IF STATIC_TARBALLS %]
 $CPANM $CPANM_OPTS %{SOURCE1}
+[% ELSE %]
+$CPANM $CPANM_OPTS DBD::Oracle
+[% END %]
 
 cmd=/usr/share/spec-helper/compress_files
 [ -x $cmd ] || cmd=/usr/lib/rpm/brp-compress

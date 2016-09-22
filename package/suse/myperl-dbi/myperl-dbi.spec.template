@@ -29,7 +29,9 @@ Requires: myperl
 # supplied by the libexpat1 SLES package.
 AutoReqProv: no
 #source:    %{pkgname}-%{version}.tar.gz
+[% IF STATIC_TARBALLS %]
 Source1:    https://cpan.metacpan.org/authors/id/T/TI/TIMB/DBI-1.636.tar.gz
+[% END %]
 
 
 %description
@@ -68,7 +70,11 @@ export PERL_MB_OPT="--destdir '%{buildroot}' --installdirs vendor"
 export PERL_MM_OPT="INSTALLDIRS=vendor DESTDIR=%{buildroot}"
 export DESTDIR="%{buildroot}"
 
+[% IF STATIC_TARBALLS %]
 $CPANM $CPANM_OPTS %{SOURCE1}
+[% ELSE %]
+$CPANM $CPANM_OPTS DBI
+[% END %]
 
 cmd=/usr/share/spec-helper/compress_files
 [ -x $cmd ] || cmd=/usr/lib/rpm/brp-compress
