@@ -9,7 +9,9 @@ language: perl
 before_install:
     - sudo apt-get update -qq
     - sudo DEBIAN_FRONTEND=noninteractive apt-get install libmysqlclient-dev debhelper devscripts build-essential fakeroot libconfig-std-perl libtemplate-perl
-    - sudo DEBIAN_FRONTEND=noninteractive apt-get install mysql-server-5.5 mysql-client-5.5 mysql-server-core-5.5 mysql-server
+    - sudo apt-get install aptitude
+    - sudo aptitude search msql
+    - sudo DEBIAN_FRONTEND=noninteractive apt-get install mysql-server-5.6 mysql-client-5.6 mysql-server-core-5.5 mysql-server
 
 # Try to get debug from inst stuff
 install:
