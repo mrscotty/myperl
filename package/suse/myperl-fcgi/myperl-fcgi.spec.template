@@ -21,9 +21,9 @@ packager:  Scott Hardin <scott@hnsc.de>
 license:   Apache
 group:     Applications/CPAN
 url:       http://www.openxpki.org
-buildroot: %{_tmppath}/%{name}-%{version}-%(id -u -n)
-prefix:    %(echo %{_prefix})
-BuildRequires: myperl
+buildroot: %{_tmppath}/%{name}-%{version}
+prefix:    %{_prefix}
+BuildRequires: myperl myperl-buildtools
 Requires: myperl
 # The auto-prereq code picks up libexpat.so.0, but this is not explicitly
 # supplied by the libexpat1 SLES package.
@@ -70,9 +70,9 @@ export PERL_MM_OPT="INSTALLDIRS=vendor DESTDIR=%{buildroot}"
 export DESTDIR="%{buildroot}"
 
 [% IF STATIC_TARBALLS %]
-$CPANM $CPANM_OPTS %{SOURCE1}
+$PERL $CPANM $CPANM_OPTS %{SOURCE1}
 [% ELSE %]
-$CPANM $CPANM_OPTS FCGI
+$PERL $CPANM $CPANM_OPTS FCGI
 [% END %]
 
 cmd=/usr/share/spec-helper/compress_files

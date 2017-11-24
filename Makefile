@@ -84,7 +84,7 @@ test: debian-test
 
 .SUFFIXES: .template
 
-%:: %.template
+%:: %.template Makefile
 	cat $< | tpage $(TT_VERSION_SYMBOLS) $(TT_EXTRA_SYMBOLS) >$@
 
 ############################################################

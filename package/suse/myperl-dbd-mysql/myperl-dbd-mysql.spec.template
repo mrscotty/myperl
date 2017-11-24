@@ -21,8 +21,8 @@ packager:  Scott Hardin <scott@hnsc.de>
 license:   Apache
 group:     Applications/CPAN
 url:       http://www.openxpki.org
-buildroot: %{_tmppath}/%{name}-%{version}-%(id -u -n)
-prefix:    %(echo %{_prefix})
+buildroot: %{_tmppath}/%{name}-%{version}
+prefix:    %{_prefix}
 BuildRequires: myperl myperl-dbi libmysqlclient-devel myperl-buildtools
 Requires: myperl myperl-dbi
 # When using our own OpenSSL that may have been locally compiled, the 
@@ -33,7 +33,7 @@ Requires: myperl myperl-dbi
 AutoReqProv: no
 #source:    %{pkgname}-%{version}.tar.gz
 [% IF STATIC_TARBALLS %]
-Source1:    https://cpan.metacpan.org/authors/id/C/CA/CAPTTOFU/DBD-mysql-4.033.tar.gz
+Source1:    https://cpan.metacpan.org/authors/id/M/MI/MICHIELB/DBD-mysql-4.043.tar.gz
 [% END %]
 
 %description
@@ -76,9 +76,9 @@ export DESTDIR="%{buildroot}"
 #$CPANM $CPANM_OPTS Test::NoWarnings
 #$CPANM $CPANM_OPTS Test::Tester Test::Deep DBD::mysql
 [% IF STATIC_TARBALLS %]
-$CPANM $CPANM_OPTS %{SOURCE1}
+$PERL $CPANM $CPANM_OPTS %{SOURCE1}
 [% ELSE %]
-$CPANM $CPANM_OPTS DBD::mysql
+$PERL $CPANM $CPANM_OPTS DBD::mysql
 [% END %]
 
 

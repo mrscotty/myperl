@@ -21,16 +21,16 @@ packager:  Scott Hardin <scott@hnsc.de>
 license:   Apache
 group:     Applications/CPAN
 url:       http://www.openxpki.org
-buildroot: %{_tmppath}/%{name}-%{version}-%(id -u -n)
-prefix:    %(echo %{_prefix})
-BuildRequires: myperl
+buildroot: %{_tmppath}/%{name}-%{version}
+prefix:    %{_prefix}
+BuildRequires: myperl myperl-buildtools
 Requires: myperl
 # The auto-prereq code picks up libexpat.so.0, but this is not explicitly
 # supplied by the libexpat1 SLES package.
 AutoReqProv: no
 #source:    %{pkgname}-%{version}.tar.gz
 [% IF STATIC_TARBALLS %]
-Source1:    https://cpan.metacpan.org/authors/id/T/TI/TIMB/DBI-1.636.tar.gz
+Source1:    https://cpan.metacpan.org/authors/id/T/TI/TIMB/DBI-1.637.tar.gz
 [% END %]
 
 

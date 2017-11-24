@@ -21,8 +21,8 @@ packager:  Scott Hardin <scott@hnsc.de>
 license:   Apache
 group:     Applications/CPAN
 url:       http://www.openxpki.org
-buildroot: %{_tmppath}/%{name}-%{version}-%(id -u -n)
-prefix:    %(echo %{_prefix})
+buildroot: %{_tmppath}/%{name}-%{version}
+prefix:    %{_prefix}
 BuildRequires: myperl oracle-xe
 Requires: myperl myperl-dbi
 # Some oracle installations are so complicated that they don't package the libcltsh.so directly,
@@ -72,9 +72,9 @@ export DESTDIR="%{buildroot}"
 #$CPANM $CPANM_OPTS Test::NoWarnings
 #$CPANM $CPANM_OPTS Test::Tester Test::Deep DBD::Oracle
 [% IF STATIC_TARBALLS %]
-$CPANM $CPANM_OPTS %{SOURCE1}
+$PERL $CPANM $CPANM_OPTS %{SOURCE1}
 [% ELSE %]
-$CPANM $CPANM_OPTS DBD::Oracle
+$PERL $CPANM $CPANM_OPTS DBD::Oracle
 [% END %]
 
 cmd=/usr/share/spec-helper/compress_files

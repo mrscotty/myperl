@@ -37,7 +37,7 @@ ifndef GIT_AUTHOR_EMAIL
 endif
 PACKAGER := $(strip $(GIT_AUTHOR_NAME) <$(GIT_AUTHOR_EMAIL)>)
 
-TT_VERSION_SYMBOLS = --define version="$(PERL_VERSION)" --define PKGREL=$(MYPERL_RELEASE) --define PACKAGER="$(PACKAGER)"
+TT_VERSION_SYMBOLS = --define version="$(PERL_VERSION)" --define PKGREL=$(MYPERL_RELEASE) --define PACKAGER="$(PACKAGER)" --define STATIC_TARBALLS=$(STATIC_TARBALLS)
 .SUFFIXES: .template
 
 # For documentation in this implicit rule, see ../../common/Makefile.inc
