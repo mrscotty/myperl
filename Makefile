@@ -65,7 +65,7 @@ myperl-deb-release:
 fetch-perl: $(PERL_TARBALL)
 
 $(PERL_TARBALL):
-	wget -O $@ $(PERL_SRCBASE)/$(PERL_TARBALL)
+	wget -O $@ --no-verbose $(PERL_SRCBASE)/$(PERL_TARBALL)
 
 fetch-cpanm: cpanm
 
