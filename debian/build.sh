@@ -8,5 +8,5 @@ ls -latr
 
 make debian
 
-echo "INFO: find / \*.deb"
-find / \*.deb
+echo "INFO: find / -name \*.deb"
+find / -name \*.deb
