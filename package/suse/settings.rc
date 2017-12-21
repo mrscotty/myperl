@@ -1,0 +1,21 @@
+# ex/settings.rc
+
+
+if [ "$UID" == "0" ]; then
+    SUDO=
+else
+    SUDO=sudo
+fi
+
+CACHEDIR=~/cache
+for i in /vagrant /suse-studio /media/sf_suse-studio; do
+    if [ -d $i ]; then
+        CACHEDIR=$i/cache
+    fi
+done
+
+export OPENSSL_PREFIX=/opt/myperl/ssl
+export OPENSSL_INCLUDE=$OPENSSL_PREFIX/include
+export OPENSSL_INC=$OPENSSL_PREFIX/include
+export OPENSSL_LIB=$OPENSSL_PREFIX/lib
+
