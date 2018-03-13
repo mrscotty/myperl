@@ -85,7 +85,8 @@ test: debian-test
 .SUFFIXES: .template
 
 %:: %.template Makefile
-	cat $< | tpage $(TT_VERSION_SYMBOLS) $(TT_EXTRA_SYMBOLS) >$@
+	cat $< | tpage $(TT_VERSION_SYMBOLS) $(TT_EXTRA_SYMBOLS) >$@.new
+	mv $@.new $@
 
 ############################################################
 # Debian Targets
