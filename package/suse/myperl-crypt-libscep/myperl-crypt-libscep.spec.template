@@ -30,7 +30,7 @@ Requires: myperl
 AutoReqProv: no
 #source:    %{pkgname}-%{version}.tar.gz
 [% IF STATIC_TARBALLS %]
-Source1:    crypt-libscep-0.3.tar.gz
+Source1:    Crypt-LibSCEP-0.3.tar.gz
 [% END %]
 
 %description
